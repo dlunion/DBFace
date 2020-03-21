@@ -1,17 +1,17 @@
 # DBFace
-DBFace is a single-stage face detector 
+DBFace is a real-time, single-stage detector for face detection, with faster speed and higher accuracy
 
 
 
-## MAP@0.5 Result on val set of WiderFace
+## MAP@0.5 Result on validation set of WiderFace
 
 *  Single Scale Inference on the Original Image
 
 Method | Version | Size | Easy | Medium | Hard
 -|-|-|-|-|-
 RetinaFace-MobileNetV2 | Small | 1.68MB  | 0.896 | 0.871 | 0.681
-DBFace-MobileNetV3-ReLU | Large | 7.03MB | 0.883 | **0.880** | **0.786** 
-DBFace-MobileNetV3 | Large | 7.03MB | **0.905** | **0.896** | **0.794** 
+DBFace-MobileNetV3-ReLU (Ours) | Large | 7.03MB | 0.883 | **0.880** | **0.786** 
+DBFace-MobileNetV3 (Ours) | Large | 7.03MB | **0.905** | **0.896** | **0.794** 
 CenterFace-MobileNetV2 | Large | 7.3MB | ? | ? | ?
 
 
@@ -37,9 +37,43 @@ CenterFace-MobileNetV2 | Large | 7.3MB | ? | ? | ?
 ![selfie.centerface.draw.jpg](result/selfie.centerface.draw.jpg)
 
 
+
+
+
+## MAP@0.5 Result on validation set of WiderFace
+
+![](result/merge.jpg)
+
+
+
+
+
+
+## MAP@0.4 Result on validation set of WiderFace
+
+*  Single Scale Inference on the Original Image
+*  IoU@0.4 measurement base on [python code](https://github.com/chenjun2hao/CenterFace.pytorch/blob/master/evaluate/evaluation.py)
+*  [centerface code](https://github.com/Star-Clouds/CenterFace)
+*  [chenjun2hao re-implementation](https://github.com/chenjun2hao/CenterFace.pytorch)
+
+Method | Version | Size | Easy | Medium | Hard
+-|-|-|-|-|-
+DBFace-MobileNetV3 | Large | 7.03MB | **0.925** | **0.920** | **0.847** 
+CenterFace-MobileNetV2 | Large | 7.3MB | 0.922 | 0.911 | 0.782 
+chenjun2hao re-implementation | Large | 7.3MB| 0.921 | 0.909 | 0.785 
+
+
+
+## Speed and Train
+
+coming soon...
+
+
+
 ## Author
 - [liuanqi-libra7](https://github.com/liuanqi-libra7)
 - [dlunion](https://github.com/dlunion)
+
 
 
 ## References
