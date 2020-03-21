@@ -37,8 +37,8 @@ CenterFace-MobileNetV2 | Large | 7.3MB | ? | ? | ?
 
 
 ## Author
-[liuanqi-libra7](https://github.com/liuanqi-libra7)
-[dlunion](https://github.com/dlunion)
+- [liuanqi-libra7](https://github.com/liuanqi-libra7)
+- [dlunion](https://github.com/dlunion)
 
 
 ## References
