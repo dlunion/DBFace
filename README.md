@@ -58,7 +58,7 @@ CenterFace-MobileNetV2 | Large | 7.3MB | ? | ? | ?
 
 Method | Version | Size | Easy | Medium | Hard
 -|-|-|-|-|-
-DBFace-MobileNetV3 | Large | 7.03MB | **0.925** | **0.920** | **0.847** 
+DBFace-MobileNetV3 (Ours) | Large | 7.03MB | **0.925** | **0.920** | **0.847** 
 CenterFace-MobileNetV2 | Large | 7.3MB | 0.922 | 0.911 | 0.782 
 chenjun2hao re-implementation | Large | 7.3MB| 0.921 | 0.909 | 0.785 
 
