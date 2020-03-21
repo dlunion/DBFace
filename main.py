@@ -259,7 +259,7 @@ def detect_image(model, file):
     for obj in objs:
         common.drawbbox(image, obj)
 
-    common.imwrite(common.file_name_no_suffix(file) + ".draw.jpg", image)
+    common.imwrite("detect_result/" + common.file_name_no_suffix(file) + ".draw.jpg", image)
 
 
 if __name__ == "__main__":
@@ -272,9 +272,9 @@ if __name__ == "__main__":
 
     dbface.load("dbface.pth")
 
-    detect_image(dbface, "selfie.jpg")
-    detect_image(dbface, "12_Group_Group_12_Group_Group_12_249.jpg")
-    detect_image(dbface, "12_Group_Group_12_Group_Group_12_728.jpg")
+    detect_image(dbface, "imgs/selfie.jpg")
+    detect_image(dbface, "imgs/12_Group_Group_12_Group_Group_12_249.jpg")
+    detect_image(dbface, "imgs/12_Group_Group_12_Group_Group_12_728.jpg")
 
 
 
