@@ -47,3 +47,4 @@ CenterFace-MobileNetV2 | Large | 7.3MB | ? | ? | ?
 
 4. Zhen-Hua Feng, Wing Loss for Robust Facial Landmark Localisation with Convolutional Neural Networks: https://arxiv.org/abs/1711.06753v4
 
+5. Mahyar Najib, SSH: Single Stage Headless Face Detector: https://arxiv.org/abs/1708.03979
