@@ -45,5 +45,5 @@ CenterFace-MobileNetV2 | Large | 7.3MB | ? | ? | ?
 
 3. Zili Liu, Training-Time-Friendly Network for Real-Time Object Detection：https://arxiv.org/abs/1909.00700
 
-4. Zhen-Hua Feng, Wing Loss for Robust Facial Landmark Localisation with Convolutional Neural Networkshttps://arxiv.org/abs/1711.06753v4
+4. Zhen-Hua Feng, Wing Loss for Robust Facial Landmark Localisation with Convolutional Neural Networks: https://arxiv.org/abs/1711.06753v4
 
