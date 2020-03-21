@@ -10,8 +10,8 @@ DBFace is a single-stage face detector
 Method | Version | Size | Easy | Medium | Hard
 -|-|-|-|-|-
 RetinaFace-MobileNetV2 | Small | 1.68MB  | 0.896 | 0.871 | 0.681
-DBFace-MobileNetV3-ReLU | Large | 7.4MB | 0.883 | **0.880** | **0.786** 
-DBFace-MobileNetV3 | Large | 7.4MB | **0.905** | **0.896** | **0.794** 
+DBFace-MobileNetV3-ReLU | Large | 7.03MB | 0.883 | **0.880** | **0.786** 
+DBFace-MobileNetV3 | Large | 7.03MB | **0.905** | **0.896** | **0.794** 
 CenterFace-MobileNetV2 | Large | 7.3MB | ? | ? | ?
 
 
