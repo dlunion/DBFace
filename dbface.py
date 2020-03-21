@@ -271,6 +271,11 @@ if __name__ == "__main__":
         dbface.cuda()
 
     dbface.load("dbface.pth")
+
     detect_image(dbface, "selfie.jpg")
+    detect_image(dbface, "12_Group_Group_12_Group_Group_12_249.jpg")
     detect_image(dbface, "12_Group_Group_12_Group_Group_12_728.jpg")
+
+
+
     
