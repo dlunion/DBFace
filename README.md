@@ -36,6 +36,10 @@ CenterFace-MobileNetV2 | Large | 7.3MB | ? | ? | ?
 ![selfie.centerface.draw.jpg](result/selfie.centerface.draw.jpg)
 
 
+## Author
+[liuanqi-libra7](https://github.com/liuanqi-libra7)
+[dlunion](https://github.com/dlunion)
+
 
 ## References
 
