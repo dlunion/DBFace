@@ -81,6 +81,25 @@ class BBox:
         self.b = clip_value(self.b, height - 1)
         return self
 
+    def iou(self, other):
+        return computeIOU(self.box, other.box)
+
+
+def computeIOU(rec1, rec2):
+    cx1, cy1, cx2, cy2 = rec1
+    gx1, gy1, gx2, gy2 = rec2
+    S_rec1 = (cx2 - cx1 + 1) * (cy2 - cy1 + 1)
+    S_rec2 = (gx2 - gx1 + 1) * (gy2 - gy1 + 1)
+    x1 = max(cx1, gx1)
+    y1 = max(cy1, gy1)
+    x2 = min(cx2, gx2)
+    y2 = min(cy2, gy2)
+ 
+    w = max(0, x2 - x1 + 1)
+    h = max(0, y2 - y1 + 1)
+    area = w * h
+    iou = area / (S_rec1 + S_rec2 - area)
+    return iou
 
 def intv(*value):
 
