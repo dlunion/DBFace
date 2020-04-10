@@ -69,6 +69,9 @@ chenjun2hao re-implementation | Large | 7.3MB| 0.921 | 0.909 | 0.785
 coming soon...
 
 
+## Onnx And TensorRT
+[tensorRTIntegrate](https://github.com/dlunion/tensorRTIntegrate)
+
 
 ## Author
 - [liuanqi-libra7](https://github.com/liuanqi-libra7)
