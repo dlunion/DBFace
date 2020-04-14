@@ -37,30 +37,9 @@ CenterFace-MobileNetV2 | Large | 7.3MB | ? | ? | ?
 ![selfie.centerface.draw.jpg](result/selfie.centerface.draw.jpg)
 
 
-
-
-
 ## MAP@0.5 Result on validation set of WiderFace
 
 ![](result/merge.jpg)
-
-
-
-
-
-
-## MAP@0.4 Result on validation set of WiderFace
-
-*  Single Scale Inference on the Original Image
-*  IoU@0.4 measurement base on [python code](https://github.com/chenjun2hao/CenterFace.pytorch/blob/master/evaluate/evaluation.py)
-*  [centerface code](https://github.com/Star-Clouds/CenterFace)
-*  [chenjun2hao re-implementation](https://github.com/chenjun2hao/CenterFace.pytorch)
-
-Method | Version | Size | Easy | Medium | Hard
--|-|-|-|-|-
-DBFace-MobileNetV3 (Ours) | Large | 7.03MB | **0.925** | **0.920** | **0.847** 
-CenterFace-MobileNetV2 | Large | 7.3MB | 0.922 | 0.911 | 0.782 
-chenjun2hao re-implementation | Large | 7.3MB| 0.921 | 0.909 | 0.785 
 
 
 
