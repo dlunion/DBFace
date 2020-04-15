@@ -47,7 +47,7 @@ def detect(model, image, threshold=0.4, nms_iou=0.5):
     hm, box, landmark = model(torch_image)
     hm_pool = F.max_pool2d(hm, 3, 1, 1)
     scores, indices = ((hm == hm_pool).float() * hm).view(1, -1).cpu().topk(1000)
-    hm_height, hm_width = hm.shape[2:]
+    hm_width = hm.shape[2:]
 
     scores = scores.squeeze()
     indices = indices.squeeze()
