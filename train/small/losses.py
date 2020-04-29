@@ -5,7 +5,7 @@ import numpy as np
 
 
 class FocalLoss(nn.Module):
-    def forward(self, pred, gt, pos_weights):
+    def forward(self, pred, gt, pos_weights, keep_mask=None):
         pos_inds = gt.eq(1).float()
         neg_inds = gt.lt(1).float()
 
@@ -13,8 +13,12 @@ class FocalLoss(nn.Module):
         pos_loss = torch.log(pred) * torch.pow(1 - pred, 2) * pos_weights
         neg_loss = torch.log(1 - pred) * torch.pow(pred, 2) * neg_weights * neg_inds
 
-        pos_loss = pos_loss.sum()
-        neg_loss = neg_loss.sum()
+        if keep_mask is not None:
+            pos_loss = (pos_loss * keep_mask).sum()
+            neg_loss = (neg_loss * keep_mask).sum()
+        else:
+            pos_loss = pos_loss.sum()
+            neg_loss = neg_loss.sum()
         return -(pos_loss + neg_loss)
 
 

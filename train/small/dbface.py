@@ -10,8 +10,6 @@ _MODEL_URL_DOMAIN = "http://zifuture.com:1000/fs/public_models"
 _MODEL_URL_LARGE = "mbv3large-76f5a50e.pth"
 _MODEL_URL_SMALL = "mbv3small-09ace125.pth"
 
-_MODEL_TRAINED_URL_SMALL = "small.dense.wide64.ucba-467314bf.pth"
-
 class SeModule(nn.Module):
     def __init__(self, in_size, reduction=4):
         super(SeModule, self).__init__()
@@ -246,11 +244,6 @@ class DBFace(nn.Module):
 
         if self.has_landmark:
             self.landmark.init_normal(0.001, 0)
-
-
-    def load_from_zoo(self):
-        checkpoint = model_zoo.load_url(f"{_MODEL_URL_DOMAIN}/{_MODEL_TRAINED_URL_SMALL}", map_location="cpu")
-        self.load_state_dict(checkpoint)
 
 
     def load(self, file):

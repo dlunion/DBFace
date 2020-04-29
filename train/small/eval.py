@@ -13,12 +13,12 @@ from dbface import DBFace
 from evaluate import evaluation
 
 # create logger
-trial_name = "small-H-dense-wide64-UCBA"
+trial_name = "small-H-dense-wide64-UCBA-keep12-noext-ignoresmall2"
 jobdir = f"jobs/{trial_name}"
 log = logger.create(trial_name, f"{jobdir}/logs/eval.log")
 
 # load and init model
-model = DBFace(has_landmark=True, wide=64, has_ext=True, upmode="UCBA")
+model = DBFace(has_landmark=True, wide=64, has_ext=False, upmode="UCBA")
 model.load(f"{jobdir}/models/150.pth")
 model.eval()
 model.cuda()

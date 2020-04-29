@@ -9,33 +9,27 @@ from common import *
 def grayscale(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-
 def lighting_(image, alphastd, eigval, eigvec):
 
     alpha = np.random.RandomState().normal(scale=alphastd, size=(3, ))
     image += np.dot(eigvec, eigval * alpha)
-
 
 def blend_(alpha, image1, image2):
     image1 *= alpha
     image2 *= (1 - alpha)
     image1 += image2
 
-
 def saturation_(image, gs, gs_mean, var):
     alpha = 1. + np.random.RandomState().uniform(low=-var, high=var)
     blend_(alpha, image, gs[:, :, None])
-
 
 def brightness_(image, gs, gs_mean, var):
     alpha = 1. + np.random.RandomState().uniform(low=-var, high=var)
     image *= alpha
 
-
 def contrast_( image, gs, gs_mean, var):
     alpha = 1. + np.random.RandomState().uniform(low=-var, high=var)
     blend_(alpha, image, gs_mean)
-
 
 def augmentWithColorJittering(image, objs):
     eig_val = np.array([0.2141788, 0.01817699, 0.00341571],
@@ -56,7 +50,6 @@ def augmentWithColorJittering(image, objs):
     image = image *255.
     image = np.uint8(np.clip(image, 0, 255))
     return image, objs
-
 
 def limitbox(box, width, height):
     x, y, r, b = box

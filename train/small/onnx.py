@@ -5,11 +5,9 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from dbface import DBFace
+import torch.onnx.symbolic_opset11
 
-#pytorch 1.4
-#import torch.onnx.symbolic_opset11
-
-trial_name = "small-H-dense-wide64-UCBA"
+trial_name = "small-H-dense-wide64-UCBA-keep12-noext"
 jobdir = f"jobs/{trial_name}"
 
 
@@ -27,7 +25,7 @@ class OnnxModel(nn.Module):
         box = torch.exp(box)
         return center_sigmoid, center_maxpool, box, landmark
 
-model = OnnxModel(has_landmark=True, wide=64, has_ext=True, upmode="UCBA")
+model = OnnxModel(has_landmark=True, wide=64, has_ext=False, upmode="UCBA")
 model.eval()
 model.cuda()
 

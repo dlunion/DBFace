@@ -20,19 +20,14 @@
    			...
    ```
 
-2. Run `python train-small-H.py`
+2. Run `python train-small-H-keep12-noext-ignoresmall2.py`
 
 
 
 ### MAP on WiderFace Val Dataset
 
-| Method                 | Version | Size   | Easy  | Medium | Hard  |
-| ---------------------- | ------- | ------ | ----- | ------ | ----- |
-| RetinaFace-MobileNetV2 | Small   | 1.68MB | 0.896 | 0.871  | 0.681 |
-| DBFace-Small-H(Ours)   | Small   | 1.75MB | 0.886 | 0.860  | 0.731 |
-
-
-
-### Model
-
-[download](http://zifuture.com:1000/fs/public_models/small.dense.wide64.ucba-467314bf.pth)
+| Method                     | Version | Size       | Easy  | Medium | Hard      |
+| -------------------------- | ------- | ---------- | ----- | ------ | --------- |
+| RetinaFace-MobileNetV2     | Small   | 1.68MB     | 0.896 | 0.871  | 0.681     |
+| DBFace-Small-H-NoExt(Ours) | Small   | **1.30MB** | 0.891 | 0.863  | **0.700** |
+| DBFace-Small-H(Ours)       | Small   | 1.73MB     | 0.896 | 0.871  | **0.714** |

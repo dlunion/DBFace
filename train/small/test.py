@@ -28,17 +28,16 @@ def nms(objs, iou=0.5):
 mean = [0.408, 0.447, 0.47]
 std = [0.289, 0.274, 0.278]
 
-trial_name = "small-H-dense-wide64-UCBA"
+trial_name = "small-H-dense-wide64-UCBA-keep12-ignoresmall"
 jobdir = f"jobs/{trial_name}"
 
 image = common.imread("imgs/selfie.jpg")
 model = DBFace(has_landmark=True, wide=64, has_ext=True, upmode="UCBA")
-#model.load(f"{jobdir}/models/150.pth")
-model.load_from_zoo()
+model.load(f"{jobdir}/models/150.pth")
 model.eval()
 model.cuda()
 
-outs = eval_tool.detect_image(model, image, mean, std, 0.3)
+outs = eval_tool.detect_image(model, image, mean, std, 0.2)
 outs = nms(outs, 0.2)
 print("objs = %d" % len(outs))
 for obj in outs:

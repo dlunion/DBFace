@@ -35,7 +35,8 @@ class LDataset(Dataset):
             log.info("{} is empty, index={}".format(imgfile, index))
             return self[random.randint(0, len(self.items)-1)]
 
-        image, objs = augment.webface(image, objs, self.width, self.height)
+        keepsize            = 12
+        image, objs = augment.webface(image, objs, self.width, self.height, keepsize=0)
 
         # norm
         image = ((image / 255.0 - self.mean) / self.std).astype(np.float32)
@@ -47,15 +48,52 @@ class LDataset(Dataset):
 
         heatmap_gt          = np.zeros((1,     fm_height, fm_width), np.float32)
         heatmap_posweight   = np.zeros((1,     fm_height, fm_width), np.float32)
+        keep_mask           = np.ones((1,     fm_height, fm_width), np.float32)
         reg_tlrb            = np.zeros((1 * 4, fm_height, fm_width), np.float32)
         reg_mask            = np.zeros((1,     fm_height, fm_width), np.float32)
         distance_map        = np.zeros((1,     fm_height, fm_width), np.float32) + 1000
         landmark_gt         = np.zeros((1 * 10,fm_height, fm_width), np.float32)
         landmark_mask       = np.zeros((1,     fm_height, fm_width), np.float32)
 
+        hassmall = False
         for obj in objs:
+            isSmallObj = obj.area < keepsize * keepsize
+
+            if isSmallObj:
+                cx, cy = obj.safe_scale_center(1 / stride, fm_width, fm_height)
+                keep_mask[0, cy, cx] = 0
+                w, h = obj.width / stride, obj.height / stride
+
+                x0 = int(common.clip_value(cx - w // 2, fm_width-1))
+                y0 = int(common.clip_value(cy - h // 2, fm_height-1))
+                x1 = int(common.clip_value(cx + w // 2, fm_width-1) + 1)
+                y1 = int(common.clip_value(cy + h // 2, fm_height-1) + 1)
+                if x1 - x0 > 0 and y1 - y0 > 0:
+                    keep_mask[0, y0:y1, x0:x1] = 0
+                hassmall = True
+
+        for obj in objs:
+
             classes = 0
             cx, cy = obj.safe_scale_center(1 / stride, fm_width, fm_height)
+            reg_box = np.array(obj.box) / stride
+            isSmallObj = obj.area < keepsize * keepsize
+
+            if isSmallObj:
+                if obj.area >= 5 * 5:
+                    distance_map[classes, cy, cx] = 0
+                    reg_tlrb[classes*4:(classes+1)*4, cy, cx] = reg_box
+                    reg_mask[classes, cy, cx] = 1
+                continue
+
+            w, h = obj.width / stride, obj.height / stride
+            x0 = int(common.clip_value(cx - w // 2, fm_width-1))
+            y0 = int(common.clip_value(cy - h // 2, fm_height-1))
+            x1 = int(common.clip_value(cx + w // 2, fm_width-1) + 1)
+            y1 = int(common.clip_value(cy + h // 2, fm_height-1) + 1)
+            if x1 - x0 > 0 and y1 - y0 > 0:
+                keep_mask[0, y0:y1, x0:x1] = 1
+
             w_radius, h_radius = common.truncate_radius((obj.width, obj.height))
             gaussian_map = common.draw_truncate_gaussian(heatmap_gt[classes, :, :], (cx, cy), h_radius, w_radius)
 
@@ -74,7 +112,6 @@ class LDataset(Dataset):
             range_expand_y = max(min_expand_size, range_expand_y)
 
             icx, icy = cx, cy
-            reg_box = np.array(obj.box) / stride
             reg_landmark = None
             fill_threshold = 0.3
 			
@@ -107,7 +144,11 @@ class LDataset(Dataset):
                                 reg_tlrb[classes*4:(classes+1)*4, cy, cx] = reg_box
                                 reg_mask[classes, cy, cx] = 1
 
-        return T.to_tensor(image), heatmap_gt, heatmap_posweight, reg_tlrb, reg_mask, landmark_gt, landmark_mask, len(objs)
+        # if hassmall:
+        #     common.imwrite("test_result/keep_mask.jpg", keep_mask[0]*255)
+        #     common.imwrite("test_result/heatmap_gt.jpg", heatmap_gt[0]*255)
+        #     common.imwrite("test_result/keep_ori.jpg", (image*self.std+self.mean)*255)
+        return T.to_tensor(image), heatmap_gt, heatmap_posweight, reg_tlrb, reg_mask, landmark_gt, landmark_mask, len(objs), keep_mask
 
 
 
@@ -117,11 +158,11 @@ class App(object):
         self.width, self.height = 800, 800
         self.mean = [0.408, 0.447, 0.47]
         self.std = [0.289, 0.274, 0.278]
-        self.batch_size = 24
+        self.batch_size = 18
         self.lr = 1e-4
-        self.gpus = [3] #[0, 1, 2, 3]
+        self.gpus = [1] #[0, 1, 2, 3]
         self.gpu_master = self.gpus[0]
-        self.model = DBFace(has_landmark=True, wide=64, has_ext=True, upmode="UCBA")
+        self.model = DBFace(has_landmark=True, wide=64, has_ext=False, upmode="UCBA")
         self.model.init_weights()
         self.model = nn.DataParallel(self.model, device_ids=self.gpus)
         self.model.cuda(device=self.gpu_master)
@@ -148,7 +189,7 @@ class App(object):
 
     def train_epoch(self, epoch):
         
-        for indbatch, (images, heatmap_gt, heatmap_posweight, reg_tlrb, reg_mask, landmark_gt, landmark_mask, num_objs) in enumerate(self.train_loader):
+        for indbatch, (images, heatmap_gt, heatmap_posweight, reg_tlrb, reg_mask, landmark_gt, landmark_mask, num_objs, keep_mask) in enumerate(self.train_loader):
 
             self.iter += 1
 
@@ -160,6 +201,7 @@ class App(object):
 
             heatmap_gt          = heatmap_gt.to(self.gpu_master)
             heatmap_posweight   = heatmap_posweight.to(self.gpu_master)
+            keep_mask           = keep_mask.to(self.gpu_master)
             reg_tlrb            = reg_tlrb.to(self.gpu_master)
             reg_mask            = reg_mask.to(self.gpu_master)
             landmark_gt         = landmark_gt.to(self.gpu_master)
@@ -171,7 +213,7 @@ class App(object):
             hm = torch.clamp(hm, min=1e-4, max=1-1e-4)
             tlrb = torch.exp(tlrb)
 
-            hm_loss = self.focal_loss(hm, heatmap_gt, heatmap_posweight) / batch_objs
+            hm_loss = self.focal_loss(hm, heatmap_gt, heatmap_posweight, keep_mask=keep_mask) / batch_objs
             reg_loss = self.giou_loss(tlrb, reg_tlrb, reg_mask)*5
             landmark_loss = self.landmark_loss(landmark, landmark_gt, landmark_mask)*0.1
             loss = hm_loss + reg_loss + landmark_loss
@@ -227,7 +269,7 @@ class App(object):
             torch.save(self.model.module.state_dict(), file)
 
 
-trial_name = "small-H-dense-wide64-UCBA"
+trial_name = "small-H-dense-wide64-UCBA-keep12-noext-ignoresmall2"
 jobdir = f"jobs/{trial_name}"
 
 log = logger.create(trial_name, f"{jobdir}/logs/{trial_name}.log")
