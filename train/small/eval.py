@@ -1,6 +1,6 @@
 
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = "1"
+os.environ["CUDA_VISIBLE_DEVICES"] = "3"
 
 
 import common
@@ -43,6 +43,8 @@ for i in range(total_file):
     # load image and forward
     image = common.imread(file)
     objs = eval_tool.detect_image(model, image, mean, std, 0.01)
+    #objs = eval_tool.detect_image_retinaface_style(model, image, mean, std, 0.05)
+    #objs = common.nms(objs, 0.3)
     
     # summary to all_result_dict
     image_pred = []

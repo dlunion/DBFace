@@ -70,6 +70,39 @@ def detect_images_giou_with_netout(output_hm, output_tlrb, output_landmark, thre
     return imboxs
 
 
+def detect_images_giou_with_retinaface_style_eval(output_hm, output_tlrb, output_landmark, threshold=0.4, ibatch=0):
+
+    stride = 4
+    _, _, hm_height, hm_width = output_hm.shape
+    hm = output_hm[ibatch].reshape(1, 1, hm_height, hm_width)
+    tlrb = output_tlrb[ibatch]
+    landmark = output_landmark[ibatch]
+
+    area = hm_height * hm_width
+    keep = (hm > threshold).view(area)
+    indices = torch.arange(0, area)[keep]
+    hm = hm.view(1, area).cpu().data.numpy()
+    tlrb = tlrb.view(4, area).cpu().data.numpy()
+    landmark = landmark.view(10, area).cpu().data.numpy()
+
+    cx, cy = indices % hm_width, indices // hm_width
+    scores = hm[0, indices]
+    x1, y1, x2, y2 = tlrb[0:4, indices]
+    cts = np.vstack([cx, cy, cx, cy])
+    locs = np.vstack([-x1, -y1, x2, y2])
+    x1, y1, x2, y2 = (cts + locs) * stride
+
+    x5y5 = landmark[0:10, indices]
+    x5y5 = common.exp(x5y5 * 4)
+    x5y5 = (x5y5 + np.vstack([cx] * 5 + [cy] * 5)) * stride
+
+    imboxs = []
+    for i in range(len(indices)):
+        boxlandmark = list(zip(x5y5[0:5, i], x5y5[5:, i]))
+        imboxs.append(common.BBox(label="facial", xyrb=common.floatv([x1[i], y1[i], x2[i], y2[i]]), score=scores[i], landmark=boxlandmark))
+    return imboxs
+
+
 def detect_image(model, image, mean, std, threshold=0.4):
     image = common.pad(image)
     image = ((image / 255 - mean) / std).astype(np.float32)
@@ -80,3 +113,15 @@ def detect_image(model, image, mean, std, threshold=0.4):
     center = center.sigmoid()
     box = torch.exp(box)
     return detect_images_giou_with_netout(center, box, landmark, threshold)
+
+
+def detect_image_retinaface_style(model, image, mean, std, threshold=0.4):
+    image = common.pad(image)
+    image = ((image / 255 - mean) / std).astype(np.float32)
+    image = image.transpose(2, 0, 1)
+    image = torch.from_numpy(image).unsqueeze(0).cuda()
+    center, box, landmark = model(image)
+
+    center = center.sigmoid()
+    box = torch.exp(box)
+    return detect_images_giou_with_retinaface_style_eval(center, box, landmark, threshold)
