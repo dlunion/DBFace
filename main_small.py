@@ -31,7 +31,7 @@ def nms(objs, iou=0.5):
     return keep
 
 
-def detect(model, image, threshold=0.4, nms_iou=0.5):
+def detect(model, image, threshold=0.3, nms_iou=0.3):
 
     mean = [0.408, 0.447, 0.47]
     std = [0.289, 0.274, 0.278]

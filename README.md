@@ -45,13 +45,17 @@ CenterFace-MobileNetV2 | Large | 7.3MB | ? | ? | ?
 
 
 
-## Speed and Train
+## Train
 
-coming soon...
+[train.md](train/small/README.md)
+
+<br/>
 
 
 ## Onnx And TensorRT
 [tensorRTIntegrate](https://github.com/dlunion/tensorRTIntegrate)
+
+<br/>
 
 
 ## Author
