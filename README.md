@@ -6,7 +6,6 @@ DBFace is a real-time, single-stage detector for face detection, with faster spe
 ## MAP@0.5 Result on validation set of WiderFace
 
 *  Single Scale Inference on the Original Image
-*  本项目只关注单尺度原图输入做推理，不会对比使用长边拉伸到1600、使用多尺度等等操作得出的mAP结果，因为考虑的是落地使用，不是为了刷分而存在
 
 Method | Version | Size | Easy | Medium | Hard
 -|-|-|-|-|-
