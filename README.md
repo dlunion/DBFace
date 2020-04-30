@@ -57,6 +57,12 @@ CenterFace-MobileNetV2 | Large | 7.3MB | ? | ? | ?
 
 <br/>
 
+## QQ Group
+
+936842116
+
+<br/>
+
 
 ## Author
 - [liuanqi-libra7](https://github.com/liuanqi-libra7)
