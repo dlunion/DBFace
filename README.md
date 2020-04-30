@@ -1,4 +1,4 @@
-# DBFace
+# DBFace | [中文说明](README.cn.md)
 DBFace is a real-time, single-stage detector for face detection, with faster speed and higher accuracy
 
 
