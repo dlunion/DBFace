@@ -1,2 +1,10 @@
 **/.DS_Store
 **/__pycache__
+*.pth
+.idea/
+.vscode/
+cmake-build-debug/
+build/
+ncnn/
+jobs/
+model/

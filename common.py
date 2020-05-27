@@ -158,6 +158,11 @@ def mkdirs_from_file_path(path):
 
 def imread(path):
     return cv2.imdecode(np.fromfile(path, dtype=np.uint8), 1)
+    # # image = cv2.imdecode(np.fromfile(path, dtype=np.uint8), 1)
+    # # return image[:,:,(2,1,0)]
+    # image = cv2.imread(path)
+    # image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    # return image
 
 
 def imwrite(path, image):

@@ -126,7 +126,8 @@ class UpModule(nn.Module):
         self.mode = mode
 
         if self.mode == "UCBA":
-            self.up = nn.UpsamplingBilinear2d(scale_factor=2)
+            # self.up = nn.UpsamplingBilinear2d(scale_factor=2)
+            self.up = nn.UpsamplingNearest2d(scale_factor=2)
             self.conv = CBAModule(in_channels, out_channels, 3, padding=1, bias=bias)
         elif self.mode == "DeconvBN":
             self.dconv = nn.ConvTranspose2d(in_channels, out_channels, kernel_size, stride, bias=bias)

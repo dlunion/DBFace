@@ -28,11 +28,11 @@ def nms(objs, iou=0.5):
 mean = [0.408, 0.447, 0.47]
 std = [0.289, 0.274, 0.278]
 
-trial_name = "small-H-dense-wide64-UCBA-keep12-ignoresmall"
+trial_name = "small-H-dense-wide64-UCBA-keep12-noext-ignoresmall2"
 jobdir = f"jobs/{trial_name}"
 
 image = common.imread("imgs/selfie.jpg")
-model = DBFace(has_landmark=True, wide=64, has_ext=True, upmode="UCBA")
+model = DBFace(has_landmark=True, wide=64, has_ext=False, upmode="UCBA")
 model.load(f"{jobdir}/models/150.pth")
 model.eval()
 model.cuda()
@@ -43,5 +43,5 @@ print("objs = %d" % len(outs))
 for obj in outs:
     common.drawbbox(image, obj)
 
-common.imwrite("test_result/test.jpg", image)
+common.imwrite("test_result/result.jpg", image)
 print("ok")

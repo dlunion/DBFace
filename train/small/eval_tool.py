@@ -6,6 +6,7 @@ import torch.nn as nn
 import torch
 import json
 import cv2
+import torch.nn.functional as F
 
 def _nms(heat, kernel=1):
     pad = (kernel - 1) // 2
@@ -13,6 +14,8 @@ def _nms(heat, kernel=1):
     hmax = nn.functional.max_pool2d(heat, (kernel, kernel), stride=1, padding=pad)
     keep = (hmax == heat).float()
     return heat * keep
+    # hmax = heat
+    # return hmax
 
 
 def _topk(scores, K=20):
@@ -112,6 +115,8 @@ def detect_image(model, image, mean, std, threshold=0.4):
 
     center = center.sigmoid()
     box = torch.exp(box)
+    # debug
+    # center = F.max_pool2d(center, kernel_size=3, padding=1, stride=1)
     return detect_images_giou_with_netout(center, box, landmark, threshold)
 
 
