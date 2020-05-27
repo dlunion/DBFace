@@ -45,3 +45,4 @@ for obj in outs:
 
 common.imwrite("test_result/result.jpg", image)
 print("ok")
+
