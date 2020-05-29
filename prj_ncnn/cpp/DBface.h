@@ -30,10 +30,12 @@ class DBface{
 
     const float mean_value[3] = {0.408f, 0.447f, 0.47f};
     const float std_value[3] = {1/0.289f, 1/0.274f, 1/0.278f};
-    const int fixed_h = 2220;            // for fixed size inference
-    const int fixed_w = 3072;
+    int fixed_h = 2220;            // for fixed size inference
+    int fixed_w = 3072;
     float fix_scale_h = 1.f;
     float fix_scale_w = 1.f;
+    const int max_image_size = 1024;
+
 
     const int stride = 4;
     NMS_TYPE nms_type = nms_union;
@@ -44,13 +46,13 @@ class DBface{
 
 public:
     int init(std::string param, std::string bin);
-    int detect(cv::Mat &image, std::vector<FaceInfo> & face);
+    int detect(ncnn::Mat &image, std::vector<FaceInfo> & face);
 
     DBface();
     ~DBface();
 
 private:
-    int pre_process(cv::Mat image, ncnn::Mat &output);
+    int pre_process(ncnn::Mat image, ncnn::Mat &output);
     void dynamic_resize(int src_h, int src_w, int stride=32);
     void get_ids(float *data, int h, int w, float score, std::vector<std::pair<int, int>> & ids);
     void nms(std::vector<FaceInfo> & input, std::vector<FaceInfo> & output, float nmsthreshold=0.2);

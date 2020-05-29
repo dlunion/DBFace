@@ -32,16 +32,33 @@ void DBface::dynamic_resize(int src_h, int src_w, int stride) {
 }
 
 
-int DBface::pre_process(cv::Mat image, ncnn::Mat &out) {
-    ncnn::Mat in;
+int DBface::pre_process(ncnn::Mat image, ncnn::Mat &out) {
+    ncnn::Mat in = image;
+    int src_h = image.h;
+    int src_w = image.w;
+
     if (fixed_h && fixed_w)
     {
-        fix_scale_h = float(image.rows) / fixed_h;
-        fix_scale_w = float(image.cols) / fixed_w;
-        cv::resize(image, image, cv::Size(fixed_w, fixed_h));
+        fix_scale_h = float(src_h) / fixed_h;
+        fix_scale_w = float(src_w) / fixed_w;
+        ncnn::resize_bilinear(image, in, fixed_w, fixed_h);     // for fixed size inference
     }
+    else if (src_h > max_image_size || src_w > max_image_size)  // for max image size limit
+    {
+        if (src_w > src_h)
+        {
+            fixed_w = max_image_size;
+            fixed_h = (int)(src_h * max_image_size / src_w);
+        } else
+        {
+            fixed_h = max_image_size;
+            fixed_w = (int)(src_w * max_image_size / src_h);
+        }
 
-    in = ncnn::Mat::from_pixels(image.data, ncnn::Mat::PIXEL_BGR2RGB, image.cols, image.rows);
+        fix_scale_h = float(src_h) / fixed_h;
+        fix_scale_w = float(src_w) / fixed_w;
+        ncnn::resize_bilinear(image, in, fixed_w, fixed_h);
+    }
 
     int c, h, w;
     c = in.c;
@@ -61,7 +78,7 @@ int DBface::pre_process(cv::Mat image, ncnn::Mat &out) {
 
     image_h = in.h;
     image_w = in.w;
-    dynamic_resize(image_h, image_w);
+    dynamic_resize(image_h, image_w);               // for 32 scale
 
     ncnn::resize_bilinear(in, out, d_w, d_h);
 }
@@ -244,7 +261,7 @@ void DBface::squarebox(std::vector<FaceInfo> & face)
 }
 
 
-int DBface::detect(cv::Mat &image, std::vector<FaceInfo> & Face) {
+int DBface::detect(ncnn::Mat &image, std::vector<FaceInfo> & Face) {
     ncnn::Mat in;
     pre_process(image, in);
 
