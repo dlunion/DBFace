@@ -30,8 +30,8 @@ class DBface{
 
     const float mean_value[3] = {0.408f, 0.447f, 0.47f};
     const float std_value[3] = {1/0.289f, 1/0.274f, 1/0.278f};
-    const int fixed_h = 240;            // for fixed size inference
-    const int fixed_w = 320;
+    const int fixed_h = 2220;            // for fixed size inference
+    const int fixed_w = 3072;
     float fix_scale_h = 1.f;
     float fix_scale_w = 1.f;
 
@@ -54,7 +54,7 @@ private:
     void dynamic_resize(int src_h, int src_w, int stride=32);
     void get_ids(float *data, int h, int w, float score, std::vector<std::pair<int, int>> & ids);
     void nms(std::vector<FaceInfo> & input, std::vector<FaceInfo> & output, float nmsthreshold=0.2);
-    int decode(ncnn::Mat & pool_hm, ncnn::Mat & box, ncnn::Mat & landmark, std::vector<FaceInfo> & face, float score_thresh=0.3);
+    int decode(ncnn::Mat & pool_hm, ncnn::Mat & box, ncnn::Mat & landmark, std::vector<FaceInfo> & face, float score_thresh=0.5);
     void squarebox(std::vector<FaceInfo> & face);
     float Exp(float x);
 

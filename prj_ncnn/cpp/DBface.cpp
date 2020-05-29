@@ -10,7 +10,7 @@ DBface::DBface() {
 
 
 DBface::~DBface() {
-
+    net.clear();
 }
 
 
@@ -41,13 +41,14 @@ int DBface::pre_process(cv::Mat image, ncnn::Mat &out) {
         cv::resize(image, image, cv::Size(fixed_w, fixed_h));
     }
 
-    in = ncnn::Mat::from_pixels(image.data, ncnn::Mat::PIXEL_BGR, image.cols, image.rows);
+    in = ncnn::Mat::from_pixels(image.data, ncnn::Mat::PIXEL_BGR2RGB, image.cols, image.rows);
 
     int c, h, w;
     c = in.c;
     h = in.h;
     w = in.w;
     float *data = (float *)(in.data);
+
     for (int i = 0; i < c; ++i) {
         for (int j = 0; j < h; ++j) {
             for (int k = 0; k < w; ++k) {

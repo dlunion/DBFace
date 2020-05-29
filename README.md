@@ -1,4 +1,4 @@
-# DBFace | [ncnn线路说明](README.ncnn.md)
+# DBFace | [中文说明](README.cn.md) | [ncnn支持](README.ncnn.md)
 DBFace is a real-time, single-stage detector for face detection, with faster speed and higher accuracy
 
 

@@ -3,13 +3,22 @@
 //
 #include "DBface.h"
 
-int main(){
+int main(int argc, char** argv){
+//    std::string model_param = "./model/model527.param";
+//    std::string model_bin = "./model/model527.bin";
+//    std::string test_image = "./model/selfie.jpg";
+
+    std::string model_param, model_bin, test_image;
+
+    if (argc != 4){
+        printf("please set the param/bin/jpg path");
+        return -1;
+    }
+    model_param = argv[1];
+    model_bin = argv[2];
+    test_image = argv[3];
 
     DBface dbface;
-
-    std::string model_param = "./model/model527.param";
-    std::string model_bin = "./model/model527.bin";
-    std::string test_image = "./model/test.jpg";
 
     dbface.init(model_param, model_bin);
 
@@ -19,6 +28,8 @@ int main(){
     // inference
     std::vector<FaceInfo> Facebox;
     int ret = dbface.detect(image, Facebox);
+
+    printf("detect face nums:%d \n", Facebox.size());
 
     // show detect results
     for (int i = 0; i < Facebox.size(); ++i) {
