@@ -1,2 +1,8 @@
 **/.DS_Store
 **/__pycache__
+.idea/
+.vscode/
+build/
+cmake-build-debug/
+README.ignore.md
+prj-ncnn_center/
