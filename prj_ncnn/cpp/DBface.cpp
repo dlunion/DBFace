@@ -60,21 +60,20 @@ int DBface::pre_process(ncnn::Mat image, ncnn::Mat &out) {
         ncnn::resize_bilinear(image, in, fixed_w, fixed_h);
     }
 
-    int c, h, w;
-    c = in.c;
-    h = in.h;
-    w = in.w;
-    float *data = (float *)(in.data);
+    in.substract_mean_normalize(mean_value, std_value);
 
-    for (int i = 0; i < c; ++i) {
-        for (int j = 0; j < h; ++j) {
-            for (int k = 0; k < w; ++k) {
-                data[i*h*w + j*w + k] /= 255;
+#ifdef DEBUG
+    {
+        for (int c = 0; c < in.c; c++)
+        {
+            const ncnn::Mat m = in.channel(c);
+            const float* ptr = m.row(0);
+            {
+                printf("in %d %f\n", 0, ptr[0]);
             }
         }
     }
-
-    in.substract_mean_normalize(mean_value, std_value);
+#endif
 
     image_h = in.h;
     image_w = in.w;
