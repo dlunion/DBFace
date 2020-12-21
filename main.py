@@ -44,7 +44,8 @@ def detect(model, image, threshold=0.4, nms_iou=0.5):
     if HAS_CUDA:
         torch_image = torch_image.cuda()
 
-    hm, box, landmark = model(torch_image)
+    with torch.no_grad():
+        hm, box, landmark = model(torch_image)
     hm_pool = F.max_pool2d(hm, 3, 1, 1)
     scores, indices = ((hm == hm_pool).float() * hm).view(1, -1).cpu().topk(1000)
     hm_height, hm_width = hm.shape[2:]
