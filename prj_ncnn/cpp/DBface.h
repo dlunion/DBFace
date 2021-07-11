@@ -28,8 +28,8 @@ class DBface{
 
     ncnn::Net net;
 
-    const float mean_value[3] = {0.408f, 0.447f, 0.47f};
-    const float std_value[3] = {1/0.289f, 1/0.274f, 1/0.278f};
+    const float mean_value[3] = {0.408f * 255.0, 0.447f * 255.0, 0.47f * 255.0};
+    const float std_value[3] = {1 / 0.289f / 255.0, 1 / 0.274f / 255.0, 1 / 0.278f / 255.0};
     int fixed_h = 2220;            // for fixed size inference
     int fixed_w = 3072;
     float fix_scale_h = 1.f;
